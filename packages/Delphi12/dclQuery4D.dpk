@@ -1,0 +1,15 @@
+package dclQuery4D;
+
+{$DESCRIPTION 'Query4D design-time package'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  designide,
+  Query4D;
+
+contains
+  Query4D.Register in '..\..\src\Query4D.Register.pas';
+
+end.

@@ -1,0 +1,72 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{D4E52AEC-698F-4AB4-994A-EF66A4B83F92}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <Projects Include="Query4D.dproj">
+      <Dependencies/>
+    </Projects>
+    <Projects Include="dclQuery4D.dproj">
+      <Dependencies>Query4D</Dependencies>
+    </Projects>
+    <Projects Include="..\..\tests\Unit\Query4DTests.dproj">
+      <Dependencies>Query4D</Dependencies>
+    </Projects>
+    <Projects Include="..\..\samples\Query4DDemo.dproj">
+      <Dependencies>Query4D</Dependencies>
+    </Projects>
+  </ItemGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality.12</Borland.Personality>
+    <Borland.ProjectType/>
+    <BorlandProject>
+      <Default.Personality/>
+    </BorlandProject>
+  </ProjectExtensions>
+  <Target Name="Query4D">
+    <MSBuild Projects="Query4D.dproj"/>
+  </Target>
+  <Target Name="Query4D:Clean">
+    <MSBuild Projects="Query4D.dproj" Targets="Clean"/>
+  </Target>
+  <Target Name="Query4D:Make">
+    <MSBuild Projects="Query4D.dproj" Targets="Make"/>
+  </Target>
+  <Target Name="dclQuery4D">
+    <MSBuild Projects="dclQuery4D.dproj"/>
+  </Target>
+  <Target Name="dclQuery4D:Clean">
+    <MSBuild Projects="dclQuery4D.dproj" Targets="Clean"/>
+  </Target>
+  <Target Name="dclQuery4D:Make">
+    <MSBuild Projects="dclQuery4D.dproj" Targets="Make"/>
+  </Target>
+  <Target Name="Query4DTests">
+    <MSBuild Projects="..\..\tests\Unit\Query4DTests.dproj"/>
+  </Target>
+  <Target Name="Query4DTests:Clean">
+    <MSBuild Projects="..\..\tests\Unit\Query4DTests.dproj" Targets="Clean"/>
+  </Target>
+  <Target Name="Query4DTests:Make">
+    <MSBuild Projects="..\..\tests\Unit\Query4DTests.dproj" Targets="Make"/>
+  </Target>
+  <Target Name="Query4DDemo">
+    <MSBuild Projects="..\..\samples\Query4DDemo.dproj"/>
+  </Target>
+  <Target Name="Query4DDemo:Clean">
+    <MSBuild Projects="..\..\samples\Query4DDemo.dproj" Targets="Clean"/>
+  </Target>
+  <Target Name="Query4DDemo:Make">
+    <MSBuild Projects="..\..\samples\Query4DDemo.dproj" Targets="Make"/>
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="Query4D;dclQuery4D;Query4DTests;Query4DDemo"/>
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="Query4D:Clean;dclQuery4D:Clean;Query4DTests:Clean;Query4DDemo:Clean"/>
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="Query4D:Make;dclQuery4D:Make;Query4DTests:Make;Query4DDemo:Make"/>
+  </Target>
+  <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

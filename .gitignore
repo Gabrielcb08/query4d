@@ -1,0 +1,60 @@
+# ==== Delphi / RAD Studio build output ====
+*.exe
+*.dll
+*.bpl
+*.dcp
+*.dcu
+*.o
+*.obj
+*.map
+*.drc
+*.rsm
+*.tds
+*.identcache
+*.local
+*.delphilsp.json
+
+# Build/output directories
+Win32/
+Win64/
+OSX64/
+Linux64/
+Android/
+iOSDevice64/
+__history/
+__recovery/
+ModelSupport_*/
+
+# Compiler-generated / user-specific project files
+*.dproj.local
+*.groupproj.local
+*.dsk
+*.stat
+
+# Resource files compiled from .rc (kept .res are committed when needed)
+# *.res
+
+# IDE / editor
+.vscode/
+*.~*~
+*~
+
+# Claude Code local settings (personal developer config)
+.claude/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Local databases
+*.fdb
+*.gdb
+*.sqlite
+*.sqlite3
+*.db
+
+# Vendored dependencies (installed by Boss)
+modules/
+
+# Boss packages
+boss-lock.json

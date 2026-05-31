@@ -1,0 +1,41 @@
+package Query4D;
+
+{$DESCRIPTION 'Query4D runtime package'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl;
+
+contains
+  Query4D.Shared.Exceptions in '..\..\src\Shared\Query4D.Shared.Exceptions.pas',
+  Query4D.Shared.Result in '..\..\src\Shared\Query4D.Shared.Result.pas',
+  Query4D.Shared.Guard in '..\..\src\Shared\Query4D.Shared.Guard.pas',
+  Query4D.Shared.Escaper in '..\..\src\Shared\Query4D.Shared.Escaper.pas',
+  Query4D.Model.Types in '..\..\src\Model\Query4D.Model.Types.pas',
+  Query4D.Model.Field in '..\..\src\Model\Query4D.Model.Field.pas',
+  Query4D.Model.Where in '..\..\src\Model\Query4D.Model.Where.pas',
+  Query4D.Model.Join in '..\..\src\Model\Query4D.Model.Join.pas',
+  Query4D.Model.Order in '..\..\src\Model\Query4D.Model.Order.pas',
+  Query4D.Model.Group in '..\..\src\Model\Query4D.Model.Group.pas',
+  Query4D.Model.CTE in '..\..\src\Model\Query4D.Model.CTE.pas',
+  Query4D.Model.Pagination in '..\..\src\Model\Query4D.Model.Pagination.pas',
+  Query4D.Model.DML in '..\..\src\Model\Query4D.Model.DML.pas',
+  Query4D.Model.Query in '..\..\src\Model\Query4D.Model.Query.pas',
+  Query4D.View.Interfaces in '..\..\src\View\Query4D.View.Interfaces.pas',
+  Query4D.View.Base in '..\..\src\View\Query4D.View.Base.pas',
+  Query4D.View.MySQL in '..\..\src\View\Query4D.View.MySQL.pas',
+  Query4D.View.PostgreSQL in '..\..\src\View\Query4D.View.PostgreSQL.pas',
+  Query4D.View.Firebird in '..\..\src\View\Query4D.View.Firebird.pas',
+  Query4D.View.SQLite in '..\..\src\View\Query4D.View.SQLite.pas',
+  Query4D.Controller.Interfaces in '..\..\src\Controller\Query4D.Controller.Interfaces.pas',
+  Query4D.Controller.Fields in '..\..\src\Controller\Query4D.Controller.Fields.pas',
+  Query4D.Controller.Where in '..\..\src\Controller\Query4D.Controller.Where.pas',
+  Query4D.Controller.Joins in '..\..\src\Controller\Query4D.Controller.Joins.pas',
+  Query4D.Controller.Order in '..\..\src\Controller\Query4D.Controller.Order.pas',
+  Query4D.Controller.Group in '..\..\src\Controller\Query4D.Controller.Group.pas',
+  Query4D.Controller.CTE in '..\..\src\Controller\Query4D.Controller.CTE.pas',
+  Query4D.Controller in '..\..\src\Controller\Query4D.Controller.pas',
+  Query4D.Container in '..\..\src\Query4D.Container.pas';
+
+end.

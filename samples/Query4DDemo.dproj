@@ -1,0 +1,127 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{B1C2D3E4-F5A6-7890-B1C2-D3E4F5A67890}</ProjectGuid>
+        <ProjectVersion>23.0</ProjectVersion>
+        <FrameworkType>VCL</FrameworkType>
+        <MainSource>Query4DDemo.dpr</MainSource>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <TargetedPlatforms>693377</TargetedPlatforms>
+        <AppType>Application</AppType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Android64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Android64)'!=''">
+        <Cfg_2_Android64>true</Cfg_2_Android64>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='iOSDevice64' and '$(Cfg_2)'=='true') or '$(Cfg_2_iOSDevice64)'!=''">
+        <Cfg_2_iOSDevice64>true</Cfg_2_iOSDevice64>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='OSX64' and '$(Cfg_2)'=='true') or '$(Cfg_2_OSX64)'!=''">
+        <Cfg_2_OSX64>true</Cfg_2_OSX64>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='OSXARM64' and '$(Cfg_2)'=='true') or '$(Cfg_2_OSXARM64)'!=''">
+        <Cfg_2_OSXARM64>true</Cfg_2_OSXARM64>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <SanitizedProjectName>Query4DDemo</SanitizedProjectName>
+        <DCC_UnitSearchPath>..\modules\.dcp;..\..\modules\.dcp;..\modules\.dcu;..\..\modules\.dcu;..\modules;..\..\modules;..\modules\spring4d\Build\Source;..\..\modules\spring4d\Build\Source;..\modules\spring4d\Marshmallow\Demos\GettingStarted\Source;..\..\modules\spring4d\Marshmallow\Demos\GettingStarted\Source;..\modules\spring4d\Marshmallow\Demos\GettingStarted\Views;..\..\modules\spring4d\Marshmallow\Demos\GettingStarted\Views;..\modules\spring4d\Marshmallow\External\CodeGenerator\Source;..\..\modules\spring4d\Marshmallow\External\CodeGenerator\Source;..\modules\spring4d\Marshmallow\External\MongoDB;..\..\modules\spring4d\Marshmallow\External\MongoDB;..\modules\spring4d\Marshmallow\External\SQLite3;..\..\modules\spring4d\Marshmallow\External\SQLite3;..\modules\spring4d\Marshmallow\Test;..\..\modules\spring4d\Marshmallow\Test;..\modules\spring4d\Samples\AdvancedDependencyInjection\EventDrivenArchitecture;..\..\modules\spring4d\Samples\AdvancedDependencyInjection\EventDrivenArchitecture;..\modules\spring4d\Samples\IntroToDependencyInjection\1-StartingOut;..\..\modules\spring4d\Samples\IntroToDependencyInjection\1-StartingOut;..\modules\spring4d\Samples\IntroToDependencyInjection\10-InterceptorInjection;..\..\modules\spring4d\Samples\IntroToDependencyInjection\10-InterceptorInjection;..\modules\spring4d\Samples\IntroToDependencyInjection\2-MoveToInterfaces;..\..\modules\spring4d\Samples\IntroToDependencyInjection\2-MoveToInterfaces;..\modules\spring4d\Samples\IntroToDependencyInjection\3-ConstructorInjection;..\..\modules\spring4d\Samples\IntroToDependencyInjection\3-ConstructorInjection;..\modules\spring4d\Samples\IntroToDependencyInjection\4-UseMocks;..\..\modules\spring4d\Samples\IntroToDependencyInjection\4-UseMocks;..\modules\spring4d\Samples\IntroToDependencyInjection\5-IsolateInterfaces;..\..\modules\spring4d\Samples\IntroToDependencyInjection\5-IsolateInterfaces;..\modules\spring4d\Samples\IntroToDependencyInjection\6-UseContainer;..\..\modules\spring4d\Samples\IntroToDependencyInjection\6-UseContainer;..\modules\spring4d\Samples\IntroToDependencyInjection\7-CustomConstructor;..\..\modules\spring4d\Samples\IntroToDependencyInjection\7-CustomConstructor;..\modules\spring4d\Samples\IntroToDependencyInjection\8-FieldInjection;..\..\modules\spring4d\Samples\IntroToDependencyInjection\8-FieldInjection;..\modules\spring4d\Samples\IntroToDependencyInjection\9-DecoratorInjection;..\..\modules\spring4d\Samples\IntroToDependencyInjection\9-DecoratorInjection;..\modules\spring4d\Samples\SOLP Demo\Models;..\..\modules\spring4d\Samples\SOLP Demo\Models;..\modules\spring4d\Samples\SOLP Demo;..\..\modules\spring4d\Samples\SOLP Demo;..\modules\spring4d\Samples\SOLP Demo\Services;..\..\modules\spring4d\Samples\SOLP Demo\Services;..\modules\spring4d\Samples\SOLP Demo\ViewModels;..\..\modules\spring4d\Samples\SOLP Demo\ViewModels;..\modules\spring4d\Samples\SOLP Demo\Views;..\..\modules\spring4d\Samples\SOLP Demo\Views;..\modules\spring4d\Samples\SpringDemos\Demo.AutoMocking;..\..\modules\spring4d\Samples\SpringDemos\Demo.AutoMocking;..\modules\spring4d\Samples\SpringDemos\Demo.Collections;..\..\modules\spring4d\Samples\SpringDemos\Demo.Collections;..\modules\spring4d\Samples\SpringDemos\Demo.CppInterop;..\..\modules\spring4d\Samples\SpringDemos\Demo.CppInterop;..\modules\spring4d\Samples\SpringDemos\Demo.FMX.Simple;..\..\modules\spring4d\Samples\SpringDemos\Demo.FMX.Simple;..\modules\spring4d\Samples\SpringDemos\Demo.General;..\..\modules\spring4d\Samples\SpringDemos\Demo.General;..\modules\spring4d\Samples\SpringDemos\Demo.Patterns\Factory;..\..\modules\spring4d\Samples\SpringDemos\Demo.Patterns\Factory;..\modules\spring4d\Samples\SpringDemos\Demo.Patterns\Observer;..\..\modules\spring4d\Samples\SpringDemos\Demo.Patterns\Observer;..\modules\spring4d\Source\Base\Collections;..\..\modules\spring4d\Source\Base\Collections;..\modules\spring4d\Source\Base\Logging;..\..\modules\spring4d\Source\Base\Logging;..\modules\spring4d\Source\Base\Patches;..\..\modules\spring4d\Source\Base\Patches;..\modules\spring4d\Source\Base\Patterns;..\..\modules\spring4d\Source\Base\Patterns;..\modules\spring4d\Source\Base;..\..\modules\spring4d\Source\Base;..\modules\spring4d\Source\Core\Container;..\..\modules\spring4d\Source\Core\Container;..\modules\spring4d\Source\Core\Interception;..\..\modules\spring4d\Source\Core\Interception;..\modules\spring4d\Source\Core\Logging;..\..\modules\spring4d\Source\Core\Logging;..\modules\spring4d\Source\Core\Mocking;..\..\modules\spring4d\Source\Core\Mocking;..\modules\spring4d\Source\Core\Services;..\..\modules\spring4d\Source\Core\Services;..\modules\spring4d\Source\Data\ObjectDataSet;..\..\modules\spring4d\Source\Data\ObjectDataSet;..\modules\spring4d\Source\Extensions\Cryptography;..\..\modules\spring4d\Source\Extensions\Cryptography;..\modules\spring4d\Source\Extensions\Utils;..\..\modules\spring4d\Source\Extensions\Utils;..\modules\spring4d\Source\Persistence\Adapters;..\..\modules\spring4d\Source\Persistence\Adapters;..\modules\spring4d\Source\Persistence\Core;..\..\modules\spring4d\Source\Persistence\Core;..\modules\spring4d\Source\Persistence\Criteria;..\..\modules\spring4d\Source\Persistence\Criteria;..\modules\spring4d\Source\Persistence\Mapping;..\..\modules\spring4d\Source\Persistence\Mapping;..\modules\spring4d\Source\Persistence\SQL;..\..\modules\spring4d\Source\Persistence\SQL;..\modules\spring4d\Source;..\..\modules\spring4d\Source;..\modules\spring4d\Tests\Source\Base;..\..\modules\spring4d\Tests\Source\Base;..\modules\spring4d\Tests\Source\Core;..\..\modules\spring4d\Tests\Source\Core;..\modules\spring4d\Tests\Source\Extensions;..\..\modules\spring4d\Tests\Source\Extensions;..\modules\spring4d\Tests\Source;..\..\modules\spring4d\Tests\Source;..\modules\spring4d\Tests\Source\Persistence;..\..\modules\spring4d\Tests\Source\Persistence;..\modules\spring4d\Tests\Source\dUnit;..\..\modules\spring4d\Tests\Source\dUnit;..\modules\spring4d\Tests;..\..\modules\spring4d\Tests;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Android64)'!=''">
+        <BT_BuildType>Debug</BT_BuildType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_iOSDevice64)'!=''">
+        <BT_BuildType>Debug</BT_BuildType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_OSX64)'!=''">
+        <BT_BuildType>Debug</BT_BuildType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_OSXARM64)'!=''">
+        <BT_BuildType>Debug</BT_BuildType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <BT_BuildType>Debug</BT_BuildType>
+        <DCC_UnitSearchPath>..\src;..\src\Shared;..\src\Model;..\src\View;..\src\Controller;..\modules\spring4d\Source\Core;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UsePackage>rtl;vcl;Query4D;$(DCC_UsePackage)</DCC_UsePackage>
+        <VerInfo_Locale>1046</VerInfo_Locale>
+        <Manifest_File>(None)</Manifest_File>
+        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="Forms\Form.Main.pas">
+            <Form>FormMain</Form>
+        </DCCReference>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType>Application</Borland.ProjectType>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">Query4DDemo.dpr</Source>
+                </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
+            </Delphi.Personality>
+            <Platforms>
+                <Platform value="Android64">True</Platform>
+                <Platform value="iOSDevice64">True</Platform>
+                <Platform value="iOSSimARM64">True</Platform>
+                <Platform value="Linux64">True</Platform>
+                <Platform value="OSX64">True</Platform>
+                <Platform value="OSXARM64">True</Platform>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">False</Platform>
+            </Platforms>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+</Project>
