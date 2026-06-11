@@ -27,13 +27,13 @@ uses
 class procedure TGuard.IsNotNil(const Instance: TObject; const ContextName: string);
 begin
   if not Assigned(Instance) then
-    raise EDialectNotInjected.CreateFmt('[Guard] %s nao pode ser nil', [ContextName]);
+    raise EGuardViolation.CreateFmt('[Guard] %s nao pode ser nil', [ContextName]);
 end;
 
 class procedure TGuard.IsNotNil(const Intf: IInterface; const ContextName: string);
 begin
   if not Assigned(Intf) then
-    raise EDialectNotInjected.CreateFmt('[Guard] %s nao pode ser nil', [ContextName]);
+    raise EGuardViolation.CreateFmt('[Guard] %s nao pode ser nil', [ContextName]);
 end;
 
 class procedure TGuard.IsNotEmpty(const Value, ContextName: string);

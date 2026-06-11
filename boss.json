@@ -11,5 +11,6 @@
 		"./tests/Unit/Query4DTests.dproj"
 	],
 	"dependencies": {
+		"github.com/andriwsluna/Spring4D": "v1.0.1"
 	}
 }

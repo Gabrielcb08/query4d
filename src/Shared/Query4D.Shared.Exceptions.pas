@@ -13,7 +13,8 @@ type
   EInvalidTable       = class(EQuery4D);
   EUnsafeOperation    = class(EQuery4D);
   EDialectNotSupported = class(EQuery4D);
-  EDialectNotInjected  = class(EQuery4D);
+  EDialectNotInjected    = class(EQuery4D);
+  EGuardViolation        = class(EQuery4D);
   ESubqueryRequiresAlias = class(EQuery4D);
   EBindError          = class(EQuery4D);
 

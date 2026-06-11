@@ -5,7 +5,9 @@ package Query4D;
 
 requires
   rtl,
-  vcl;
+  vcl,
+  Spring.Base,
+  Spring.Core;
 
 contains
   Query4D.Shared.Exceptions in '..\..\src\Shared\Query4D.Shared.Exceptions.pas',
