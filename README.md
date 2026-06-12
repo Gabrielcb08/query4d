@@ -1,7 +1,7 @@
 # Query4D
 
-> Biblioteca Delphi para construção de queries SQL de forma **fluente, tipada e segura** —
-> sem concatenação de strings, sem SQL injection.
+> A Delphi library for building SQL queries the **fluent, parameterized, and safe** way —
+> no string concatenation, no SQL injection.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Delphi 10.3+](https://img.shields.io/badge/Delphi-10.3%2B-red.svg)](https://www.embarcadero.com)
@@ -12,87 +12,88 @@
 
 ---
 
-## Índice
+## Table of Contents
 
-- [O que é](#o-que-é)
-- [Por que usar](#por-que-usar)
-- [Instalação](#instalação)
-- [Início rápido](#início-rápido)
-- [Recursos](#recursos)
-- [Guia de uso completo](#guia-de-uso-completo)
+- [What it is](#what-it-is)
+- [Why use it](#why-use-it)
+- [Installation](#installation)
+- [Quick start](#quick-start)
+- [Features](#features)
+- [Usage guide](#usage-guide)
   - [SELECT / FROM](#select--from)
-  - [WHERE e operadores](#where-e-operadores)
-  - [Agrupamento lógico (AND/OR)](#agrupamento-lógico-andor)
+  - [WHERE and operators](#where-and-operators)
+  - [Logical grouping (AND/OR)](#logical-grouping-andor)
   - [JOINs](#joins)
   - [ORDER BY / GROUP BY / HAVING](#order-by--group-by--having)
-  - [Paginação](#paginação)
-  - [CTE (WITH) — simples e recursivo](#cte-with--simples-e-recursivo)
+  - [Pagination](#pagination)
+  - [CTE (WITH) — simple and recursive](#cte-with--simple-and-recursive)
   - [INSERT](#insert)
   - [UPDATE](#update)
   - [DELETE](#delete)
   - [RETURNING](#returning)
-  - [Build e tratamento de resultado](#build-e-tratamento-de-resultado)
-- [Dialetos suportados](#dialetos-suportados)
-- [Segurança](#segurança)
-- [Arquitetura](#arquitetura)
-- [Estrutura do repositório](#estrutura-do-repositório)
-- [Exemplos e demo](#exemplos-e-demo)
-- [Documentação](#documentação)
+  - [Build and result handling](#build-and-result-handling)
+- [Supported dialects](#supported-dialects)
+- [Safety](#safety)
+- [Architecture](#architecture)
+- [Repository layout](#repository-layout)
+- [Examples and demo](#examples-and-demo)
+- [Documentation](#documentation)
 - [Roadmap](#roadmap)
-- [Como contribuir](#como-contribuir)
-- [Licença](#licença)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
-## O que é
+## What it is
 
-Query4D é um **query builder** — uma API fluente que constrói SQL dinamicamente
-via encadeamento de métodos. Inspirado no [Knex.js](https://knexjs.org/), traz a
-mesma ergonomia para o ecossistema Delphi.
+Query4D is a **query builder** — a fluent API that assembles SQL dynamically through
+method chaining. Inspired by [Knex.js](https://knexjs.org/), it brings the same ergonomics
+to the Delphi ecosystem.
 
-**Não é um ORM:** não mapeia objetos para tabelas, não gerencia conexões e não
-executa queries. Ele entrega apenas o `SQL` e os `Params` prontos para você passar
-ao seu data access preferido (FireDAC, UniDAC, dbExpress, etc.).
+**It is not an ORM:** it does not map objects to tables, does not manage connections, and
+does not execute queries. It hands you the finished `SQL` and `Params`, ready to feed to your
+data-access layer of choice (FireDAC, UniDAC, dbExpress, etc. — or paired with
+[Conn4D](https://github.com/gabrielcb08/conn4d) for pooled connections).
 
-Use sempre que precisar montar queries SQL **condicionalmente**, de forma legível
-e segura, sem cair na armadilha de concatenar strings.
-
----
-
-## Por que usar
-
-| Problema com SQL em string | Solução do Query4D |
-|----------------------------|--------------------|
-| SQL injection por concatenação | Todo valor vira **bind param** (`?` / `$N`) |
-| `UPDATE`/`DELETE` sem WHERE apagando tudo | `EUnsafeOperation` lançada antes de renderizar |
-| SQL diferente por banco espalhado no código | Mesma query → 4 dialetos, troca em 1 linha |
-| Queries condicionais com `if`/concat ilegíveis | API fluente encadeável e autoexplicativa |
-| Sem checagem de pré-condições | `TGuard` valida toda entrada pública |
-
-- **Zero dependências externas** — sem VCL/FMX/FireDAC no núcleo da biblioteca.
-- **Componente não-visual** `TQuery4D` para arrastar no Form Designer.
-- **Tratamento de erro funcional** com `TResult<T>` — sem exceções na renderização.
+Use it whenever you need to assemble SQL **conditionally**, in a readable and safe way,
+without falling into the string-concatenation trap.
 
 ---
 
-## Instalação
+## Why use it
 
-### Via Boss (recomendado)
+| Problem with string SQL | Query4D's answer |
+| ----------------------- | ---------------- |
+| SQL injection through concatenation | Every value becomes a **bind param** (`?` / `$N`) |
+| `UPDATE`/`DELETE` without WHERE wiping a table | `EUnsafeOperation` raised before rendering |
+| Per-database SQL scattered across the code | One query → 4 dialects, switch in a single line |
+| Conditional queries with unreadable `if`/concat | Chainable, self-documenting fluent API |
+| No precondition checks | `TGuard` validates every public entry point |
+
+- **Zero external dependencies** — no VCL/FMX/FireDAC in the library core.
+- **Non-visual `TQuery4D` component** to drop on the Form Designer.
+- **Functional error handling** with `TResult<T>` — no exceptions during rendering.
+
+---
+
+## Installation
+
+### Via Boss (recommended)
 
 ```bash
-boss install https://github.com/gabrielcb08/query4d@v1.0.0
+boss install github.com/gabrielcb08/query4d@v1.0.0
 ```
 
 ### Manual (IDE)
 
-1. Baixe ou clone este repositório.
-2. Abra `packages/Delphi12/Query4D.dpk` na IDE do Delphi.
-3. Clique em **Compile** e depois em **Install**.
-4. O componente `TQuery4D` aparece na paleta **ORData**.
+1. Download or clone this repository.
+2. Open `packages/Delphi12/Query4D.dpk` in the Delphi IDE.
+3. Click **Compile**, then **Install**.
+4. The `TQuery4D` component appears on the **ORData** palette.
 
-### Adicionando ao seu projeto
+### Adding to your project
 
-Em **Project → Options → Delphi Compiler → Search Path**, adicione os caminhos de `src\`:
+In **Project → Options → Delphi Compiler → Search Path**, add the `src\` folders:
 
 ```
 ..\Query4D\src
@@ -102,17 +103,17 @@ Em **Project → Options → Delphi Compiler → Search Path**, adicione os cami
 ..\Query4D\src\Controller
 ```
 
-Então basta declarar nas units:
+Then declare in your units:
 
 ```delphi
 uses
   Query4D.Controller,   // TQuery4DController
-  Query4D.View.MySQL;   // TMySQL8View (ou PostgreSQL, Firebird, SQLite)
+  Query4D.View.MySQL;   // TMySQL8View (or PostgreSQL, Firebird, SQLite)
 ```
 
 ---
 
-## Início rápido
+## Quick start
 
 ```delphi
 uses
@@ -121,214 +122,213 @@ uses
 
 var
   R := TQuery4DController.New(TMySQL8View.New)
-    .From('pedidos', 'p')
-    .Select(['p.id', 'p.numero', 'p.valor_total'])
+    .From('orders', 'o')
+    .Select(['o.id', 'o.number', 'o.total'])
     .BeginWhere
-      .Equal('p.status', 'aprovado')
-      .GreaterThan('p.valor_total', '100')
+      .Equal('o.status', 'approved')
+      .GreaterThan('o.total', '100')
     .EndWhere
-    .OrderBy('p.data_criacao', odDesc)
+    .OrderBy('o.created_at', odDesc)
     .Limit(20)
     .Build;
 
 if R.IsOk then
-  MinhaConexao.Execute(R.Value.SQL, R.Value.Params);
+  MyConnection.Execute(R.Value.SQL, R.Value.Params);
 ```
 
-SQL gerado (MySQL):
+Generated SQL (MySQL):
 
 ```sql
-SELECT p.id, p.numero, p.valor_total
-FROM pedidos AS `p`
-WHERE p.status = ?
-  AND p.valor_total > ?
-ORDER BY p.data_criacao DESC
+SELECT o.id, o.number, o.total
+FROM orders AS `o`
+WHERE o.status = ?
+  AND o.total > ?
+ORDER BY o.created_at DESC
 LIMIT 20
 ```
 
-### Via componente no Form Designer
+### Via the Form Designer component
 
-Solte um `TQuery4D` no form, configure a propriedade `Dialect` no Object Inspector
-e chame `NewQuery` no código — sem precisar importar units de dialeto:
+Drop a `TQuery4D` on the form, set the `Dialect` property in the Object Inspector, and call
+`NewQuery` in code — no need to import dialect units:
 
 ```delphi
-// QueryBuilder: TQuery4D (no form, Dialect = dPostgreSQL)
+// QueryBuilder: TQuery4D (on the form, Dialect = dPostgreSQL)
 var R := QueryBuilder.NewQuery
-  .From('clientes')
-  .WhereEq('ativo', '1')
+  .From('customers')
+  .WhereEq('active', '1')
   .Limit(10)
   .Build;
 ```
 
 ---
 
-## Recursos
+## Features
 
-- [x] **SELECT** com campos, alias inline, expressões, `DISTINCT` e `SelectAll`
-- [x] **Sub-builder de campos** tipado (`BeginFields` / `AddAs`)
-- [x] **WHERE** com todos os operadores: comparação, LIKE, nulidade, intervalo, lista, booleano e expressão crua
-- [x] **Grupos lógicos**: `OrBegin`/`OrEnd`, `AndBegin`/`AndEnd` (aninháveis)
-- [x] **JOINs**: INNER, LEFT, RIGHT, FULL OUTER, CROSS — com alias
-- [x] **ORDER BY** com `NULLS FIRST` / `NULLS LAST` (nativo ou emulado por dialeto)
+- [x] **SELECT** with fields, inline alias, expressions, `DISTINCT` and `SelectAll`
+- [x] **Typed field sub-builder** (`BeginFields` / `AddAs`)
+- [x] **WHERE** with every operator: comparison, LIKE, nullability, range, list, boolean and raw expression
+- [x] **Logical groups**: `OrBegin`/`OrEnd`, `AndBegin`/`AndEnd` (nestable)
+- [x] **JOINs**: INNER, LEFT, RIGHT, FULL OUTER, CROSS — with alias
+- [x] **ORDER BY** with `NULLS FIRST` / `NULLS LAST` (native or dialect-emulated)
 - [x] **GROUP BY + HAVING**
-- [x] **Paginação**: `Limit`, `Offset`, `First`
-- [x] **CTE** (`WITH ... AS`) simples e **recursivo**
-- [x] **INSERT** simples e **bulk** (múltiplas linhas)
-- [x] **UPDATE** e **DELETE** com guard obrigatório de WHERE
-- [x] **RETURNING** (PostgreSQL e SQLite 3.35+)
-- [x] **Parâmetros tipados** — nunca interpolação de string
-- [x] **Componente não-visual** `TQuery4D` para o Form Designer
-- [x] **`TResult<T>`** — tratamento de erros funcional, sem exceções na render
-- [x] **4 dialetos**: MySQL 8, PostgreSQL, Firebird, SQLite
-- [x] **Zero dependências externas** no núcleo
+- [x] **Pagination**: `Limit`, `Offset`, `First`
+- [x] **CTE** (`WITH ... AS`) simple and **recursive**
+- [x] **INSERT** single and **bulk** (multiple rows)
+- [x] **UPDATE** and **DELETE** with a mandatory WHERE guard
+- [x] **RETURNING** (PostgreSQL and SQLite 3.35+)
+- [x] **Typed parameters** — never string interpolation
+- [x] **Non-visual `TQuery4D` component** for the Form Designer
+- [x] **`TResult<T>`** — functional error handling, no exceptions during render
+- [x] **4 dialects**: MySQL 8, PostgreSQL, Firebird, SQLite
+- [x] **Zero external dependencies** in the core
 
 ---
 
-## Guia de uso completo
+## Usage guide
 
-> Referência resumida. Para a referência completa de cada método veja [docs/API.md](docs/API.md);
-> para todos os operadores WHERE, [docs/OPERATORS.md](docs/OPERATORS.md).
+> Condensed reference. For the full per-method reference see [docs/API.md](docs/API.md);
+> for every WHERE operator, [docs/OPERATORS.md](docs/OPERATORS.md).
 
 ### SELECT / FROM
 
 ```delphi
-.From('pedidos')             // FROM pedidos
-.From('pedidos', 'p')        // FROM pedidos AS `p`  (delimitador conforme dialeto)
+.From('orders')              // FROM orders
+.From('orders', 'o')         // FROM orders AS `o`  (delimiter per dialect)
 
-.Select(['p.id', 'p.nome', 'COUNT(*) AS total'])
-.SelectAll                   // SELECT *  (padrão se nada for informado)
-.Select(['p.status']).Distinct   // SELECT DISTINCT p.status
+.Select(['o.id', 'o.name', 'COUNT(*) AS total'])
+.SelectAll                   // SELECT *  (default if nothing is specified)
+.Select(['o.status']).Distinct   // SELECT DISTINCT o.status
 
-// Sub-builder de campos com alias tipado:
+// Field sub-builder with typed alias:
 .BeginFields
-  .Add('p.id')
-  .AddAs('p.valor_total', 'valor')
+  .Add('o.id')
+  .AddAs('o.total', 'amount')
 .EndFields
 ```
 
-### WHERE e operadores
+### WHERE and operators
 
-Atalhos rápidos no controller principal:
+Quick shortcuts on the main controller:
 
 ```delphi
-.WhereEq('status', 'ativo')              // WHERE status = ?   (param: 'ativo')
-.WhereRaw('YEAR(criado_em) = 2024')      // expressão crua (NÃO parametrizada)
+.WhereEq('status', 'active')             // WHERE status = ?   (param: 'active')
+.WhereRaw('YEAR(created_at) = 2024')     // raw expression (NOT parameterized)
 ```
 
-Sub-builder completo via `.BeginWhere` … `.EndWhere`:
+Full sub-builder via `.BeginWhere` … `.EndWhere`:
 
-| Categoria | Métodos |
-|-----------|---------|
-| **Comparação** | `Equal`, `NotEqual`, `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`, `LessThanOrEqualTo` |
-| **Texto / LIKE** | `Contains`, `NotContains`, `StartsWith`, `EndsWith`, `ContainsCaseInsensitive` |
-| **Nulidade** | `IsNull`, `IsNotNull` |
-| **Intervalo** | `IsBetween`, `IsNotBetween` |
-| **Lista** | `IsIn`, `IsNotIn` |
-| **Booleano** | `IsTrue`, `IsFalse` |
-| **Cru / sub-query** | `Raw`, `Exists` |
+| Category | Methods |
+| -------- | ------- |
+| **Comparison** | `Equal`, `NotEqual`, `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`, `LessThanOrEqualTo` |
+| **Text / LIKE** | `Contains`, `NotContains`, `StartsWith`, `EndsWith`, `ContainsCaseInsensitive` |
+| **Nullability** | `IsNull`, `IsNotNull` |
+| **Range** | `IsBetween`, `IsNotBetween` |
+| **List** | `IsIn`, `IsNotIn` |
+| **Boolean** | `IsTrue`, `IsFalse` |
+| **Raw / sub-query** | `Raw`, `Exists` |
 
 ```delphi
 .BeginWhere
-  .Equal('p.status', 'ativo')
-  .GreaterThanOrEqualTo('p.estoque', '1')
-  .Contains('p.nome', 'Silva')           // LIKE ?  → param '%Silva%'
-  .IsIn('p.canal', ['web', 'app', 'api'])  // IN (?, ?, ?)
-  .IsBetween('p.criado_em', '2026-01-01', '2026-12-31')
-  .IsNotNull('p.email')
+  .Equal('o.status', 'active')
+  .GreaterThanOrEqualTo('o.stock', '1')
+  .Contains('o.name', 'Silva')             // LIKE ?  → param '%Silva%'
+  .IsIn('o.channel', ['web', 'app', 'api'])  // IN (?, ?, ?)
+  .IsBetween('o.created_at', '2026-01-01', '2026-12-31')
+  .IsNotNull('o.email')
 .EndWhere
 ```
 
-> Os wildcards `%` dos operadores LIKE são **adicionados automaticamente** —
-> você passa só o valor. Valores dentro de `Raw`/`WhereRaw` **não** são
-> parametrizados; use com cuidado.
+> The `%` wildcards for LIKE operators are **added automatically** — you pass only the value.
+> Values inside `Raw`/`WhereRaw` are **not** parameterized; use with care.
 
-### Agrupamento lógico (AND/OR)
+### Logical grouping (AND/OR)
 
-Predicados encadeados são unidos por `AND` por padrão. Para `OR`, abra um grupo:
+Chained predicates are joined with `AND` by default. For `OR`, open a group:
 
 ```delphi
 .BeginWhere
-  .Equal('p.ativo', '1')           // AND
+  .Equal('o.active', '1')          // AND
   .OrBegin
-    .Equal('p.canal', 'web')       // OR
-    .Equal('p.canal', 'app')       // OR
+    .Equal('o.channel', 'web')     // OR
+    .Equal('o.channel', 'app')     // OR
   .OrEnd
 .EndWhere
-// WHERE p.ativo = ? AND (p.canal = ? OR p.canal = ?)
+// WHERE o.active = ? AND (o.channel = ? OR o.channel = ?)
 ```
 
-Grupos `AndBegin`/`AndEnd` podem ser aninhados dentro de um `OrBegin`/`OrEnd`:
+`AndBegin`/`AndEnd` groups can be nested inside an `OrBegin`/`OrEnd`:
 
 ```delphi
 .OrBegin
   .AndBegin
-    .Equal('p.tipo', 'fisico')
-    .GreaterThan('p.peso', '0')
+    .Equal('o.type', 'physical')
+    .GreaterThan('o.weight', '0')
   .AndEnd
-  .Equal('p.tipo', 'digital')
+  .Equal('o.type', 'digital')
 .OrEnd
-// ((p.tipo = ? AND p.peso > ?) OR p.tipo = ?)
+// ((o.type = ? AND o.weight > ?) OR o.type = ?)
 ```
 
-> Grupos desbalanceados (`OrEnd` sem `OrBegin`, `EndWhere` com grupo aberto…)
-> lançam `EInvalidQuery`.
+> Unbalanced groups (`OrEnd` without `OrBegin`, `EndWhere` with a group still open…)
+> raise `EInvalidQuery`.
 
 ### JOINs
 
 ```delphi
-// Atalhos:
-.Join('clientes', 'c', 'c.id = p.cliente_id')       // INNER JOIN
-.LeftJoin('enderecos', 'e', 'e.id = p.endereco_id')  // LEFT JOIN
+// Shortcuts:
+.Join('customers', 'c', 'c.id = o.customer_id')      // INNER JOIN
+.LeftJoin('addresses', 'a', 'a.id = o.address_id')   // LEFT JOIN
 
-// Sub-builder completo:
+// Full sub-builder:
 .BeginJoins
-  .InnerJoin('clientes', 'c', 'c.id = p.cliente_id')
-  .LeftJoin('enderecos', 'e', 'e.id = p.endereco_id')
-  .RightJoin('categorias', 'cat', 'cat.id = p.categoria_id')
-  .CrossJoin('configuracoes', 'cfg')
+  .InnerJoin('customers', 'c', 'c.id = o.customer_id')
+  .LeftJoin('addresses', 'a', 'a.id = o.address_id')
+  .RightJoin('categories', 'cat', 'cat.id = o.category_id')
+  .CrossJoin('settings', 'cfg')
 .EndJoins
 ```
 
 ### ORDER BY / GROUP BY / HAVING
 
 ```delphi
-.OrderBy('p.nome')                  // ASC implícito
-.OrderBy('p.data_criacao', odDesc)  // DESC
+.OrderBy('o.name')                  // ASC implied
+.OrderBy('o.created_at', odDesc)    // DESC
 
-// Com NULLS FIRST/LAST (nativo ou emulado por dialeto):
+// With NULLS FIRST/LAST (native or dialect-emulated):
 .BeginOrder
-  .Asc('p.nome', noFirst)
-  .Desc('p.data', noLast)
+  .Asc('o.name', noFirst)
+  .Desc('o.date', noLast)
 .EndOrder
 
 // GROUP BY + HAVING:
 .BeginGroup
-  .By('p.cliente_id')
-  .By('p.status')
-  .Having('SUM(p.valor) > 1000')
+  .By('o.customer_id')
+  .By('o.status')
+  .Having('SUM(o.total) > 1000')
 .EndGroup
 ```
 
 `TNullsOrder`: `noDefault`, `noFirst`, `noLast`.
 
-### Paginação
+### Pagination
 
 ```delphi
-.Limit(20)     // LIMIT 20  — lança EInvalidQuery se < 1
+.Limit(20)     // LIMIT 20  — raises EInvalidQuery if < 1
 .Offset(40)    // OFFSET 40
 .First         // LIMIT 1 (Firebird: SELECT FIRST 1 …)
 ```
 
-### CTE (WITH) — simples e recursivo
+### CTE (WITH) — simple and recursive
 
 ```delphi
 .BeginWith
-  .Add('resumo',
-    'SELECT cliente_id, SUM(valor) AS total FROM pedidos GROUP BY cliente_id')
-  .AddRecursive('hierarquia',
-    'SELECT id, pai_id, 0 AS nivel FROM categorias WHERE pai_id IS NULL',
-    'SELECT c.id, c.pai_id, h.nivel + 1 FROM categorias c ' +
-    'INNER JOIN hierarquia h ON h.id = c.pai_id')
+  .Add('summary',
+    'SELECT customer_id, SUM(total) AS total FROM orders GROUP BY customer_id')
+  .AddRecursive('hierarchy',
+    'SELECT id, parent_id, 0 AS level FROM categories WHERE parent_id IS NULL',
+    'SELECT c.id, c.parent_id, h.level + 1 FROM categories c ' +
+    'INNER JOIN hierarchy h ON h.id = c.parent_id')
 .EndWith
 ```
 
@@ -336,67 +336,67 @@ Grupos `AndBegin`/`AndEnd` podem ser aninhados dentro de um `OrBegin`/`OrEnd`:
 
 ```delphi
 TQuery4DController.New(TMySQL8View.New)
-  .InsertInto('pedidos')
+  .InsertInto('orders')
   .BeginRow
-    .Value('cliente_id', '42')
-    .Value('valor_total', '199.90')
-    .Value('status', 'pendente')
+    .Value('customer_id', '42')
+    .Value('total', '199.90')
+    .Value('status', 'pending')
   .Build;
-// INSERT INTO pedidos (cliente_id, valor_total, status) VALUES (?, ?, ?)
+// INSERT INTO orders (customer_id, total, status) VALUES (?, ?, ?)
 ```
 
-**Bulk insert** — múltiplos `BeginRow`:
+**Bulk insert** — multiple `BeginRow`:
 
 ```delphi
-.InsertInto('itens')
-  .BeginRow.Value('pedido_id', '1').Value('produto', 'A')
-  .BeginRow.Value('pedido_id', '1').Value('produto', 'B')
+.InsertInto('items')
+  .BeginRow.Value('order_id', '1').Value('product', 'A')
+  .BeginRow.Value('order_id', '1').Value('product', 'B')
   .Build;
-// INSERT INTO itens (pedido_id, produto) VALUES (?, ?), (?, ?)
+// INSERT INTO items (order_id, product) VALUES (?, ?), (?, ?)
 ```
 
 ### UPDATE
 
 ```delphi
-.Update('pedidos')
-  .SetValue('status', 'aprovado')      // parametrizado
-  .SetRaw('data_aprovacao', 'NOW()')   // expressão crua (não parametrizada)
+.Update('orders')
+  .SetValue('status', 'approved')       // parameterized
+  .SetRaw('approved_at', 'NOW()')       // raw expression (not parameterized)
   .WhereEq('id', '42')
   .Build;
-// UPDATE pedidos SET status = ?, data_aprovacao = NOW() WHERE id = ?
+// UPDATE orders SET status = ?, approved_at = NOW() WHERE id = ?
 ```
 
-> ⚠️ `Build` lança **`EUnsafeOperation`** se não houver `WHERE`.
+> ⚠️ `Build` raises **`EUnsafeOperation`** when there is no `WHERE`.
 
 ### DELETE
 
 ```delphi
-.DeleteFrom('sessoes')
-  .WhereEq('usuario_id', '10')
+.DeleteFrom('sessions')
+  .WhereEq('user_id', '10')
   .Build;
-// DELETE FROM sessoes WHERE usuario_id = ?
+// DELETE FROM sessions WHERE user_id = ?
 ```
 
-> ⚠️ `Build` lança **`EUnsafeOperation`** se não houver `WHERE`.
+> ⚠️ `Build` raises **`EUnsafeOperation`** when there is no `WHERE`.
 
 ### RETURNING
 
-Suportado em PostgreSQL e SQLite 3.35+. Silenciosamente ignorado nos dialetos
-que não suportam (MySQL, Firebird).
+Supported on PostgreSQL and SQLite 3.35+. Silently ignored on dialects that do not support it
+(MySQL, Firebird).
 
 ```delphi
-.InsertInto('pedidos')
-  .BeginRow.Value('status', 'pendente')
-  .Returning(['id', 'criado_em'])
+.InsertInto('orders')
+  .BeginRow.Value('status', 'pending')
+  .Returning(['id', 'created_at'])
   .Build;
-// PostgreSQL: INSERT INTO pedidos (status) VALUES ($1) RETURNING id, criado_em
-// MySQL:      INSERT INTO pedidos (status) VALUES (?)      ← RETURNING omitido
+// PostgreSQL: INSERT INTO orders (status) VALUES ($1) RETURNING id, created_at
+// MySQL:      INSERT INTO orders (status) VALUES (?)      ← RETURNING omitted
 ```
 
-### Build e tratamento de resultado
+### Build and result handling
 
-`.Build` retorna `TResult<TQueryResult>` — **não lança** exceções de renderização
-(erros de render viram `Result.Fail(...)`).
+`.Build` returns `TResult<TQueryResult>` — it **does not raise** render exceptions
+(render errors become `Result.Fail(...)`).
 
 ```delphi
 var R := Q.Build;
@@ -405,7 +405,7 @@ if R.IsOk then
 else
   ShowMessage(R.Error.Message);
 
-// Ou via callbacks encadeados:
+// Or via chained callbacks:
 R.OnSuccess(procedure(V: TQueryResult)
    begin ExecuteQuery(V.SQL, V.Params); end)
  .OnFailure(procedure(E: TResultError)
@@ -414,152 +414,161 @@ R.OnSuccess(procedure(V: TQueryResult)
 
 `TQueryResult`:
 
-| Propriedade | Tipo | Descrição |
-|-------------|------|-----------|
-| `SQL` | `string` | SQL com placeholders (`?` ou `$N`) |
-| `Params` | `TArray<string>` | Valores na mesma ordem dos placeholders |
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `SQL` | `string` | SQL with placeholders (`?` or `$N`) |
+| `Params` | `TArray<string>` | Values in the same order as the placeholders |
 
-**Exceções lançadas *antes* de renderizar:**
-`EUnsafeOperation` (UPDATE/DELETE sem WHERE), `EDialectNotInjected` (dialeto nil),
-`EInvalidQuery` (grupo lógico desbalanceado, `Limit < 1`).
+**Exceptions raised *before* rendering:**
+`EUnsafeOperation` (UPDATE/DELETE without WHERE), `EDialectNotInjected` (nil dialect),
+`EInvalidQuery` (unbalanced logical group, `Limit < 1`).
 
 ---
 
-## Dialetos suportados
+## Supported dialects
 
-| Recurso | MySQL 8 | PostgreSQL | Firebird | SQLite |
-|---------|:-------:|:----------:|:--------:|:------:|
-| Paginação | `LIMIT/OFFSET` | `LIMIT/OFFSET` | `FIRST/SKIP` | `LIMIT/OFFSET` |
+| Feature | MySQL 8 | PostgreSQL | Firebird | SQLite |
+| ------- | :-----: | :--------: | :------: | :----: |
+| Pagination | `LIMIT/OFFSET` | `LIMIT/OFFSET` | `FIRST/SKIP` | `LIMIT/OFFSET` |
 | Placeholder | `?` | `$1`, `$2`… | `?` | `?` |
-| Quote identificador | `` `col` `` | `"col"` | `"col"` | `"col"` |
+| Identifier quote | `` `col` `` | `"col"` | `"col"` | `"col"` |
 | RIGHT / FULL JOIN | ✅ | ✅ | ✅ | ❌ |
-| CTE / CTE recursivo | ✅ | ✅ | ✅ 2.1+ | ✅ 3.8.3+ |
-| INSERT bulk | ✅ | ✅ | ⚠️ | ✅ |
+| CTE / recursive CTE | ✅ | ✅ | ✅ 2.1+ | ✅ 3.8.3+ |
+| Bulk INSERT | ✅ | ✅ | ⚠️ | ✅ |
 | RETURNING | ❌ | ✅ | ❌ | ✅ 3.35+ |
-| NULLS FIRST/LAST | Emulado | Nativo | Emulado (IIF) | Nativo |
+| NULLS FIRST/LAST | Emulated | Native | Emulated (IIF) | Native |
 
-Classes de dialeto:
+Dialect classes:
 
-| Classe | Unit |
-|--------|------|
+| Class | Unit |
+| ----- | ---- |
 | `TMySQL8View.New` | `Query4D.View.MySQL` |
 | `TPostgreSQLView.New` | `Query4D.View.PostgreSQL` |
 | `TFirebirdView.New` | `Query4D.View.Firebird` |
 | `TSQLiteView.New` | `Query4D.View.SQLite` |
 
-**A mesma query gera SQL diferente para cada banco**, sem mudar a lógica:
+**The same query produces different SQL for each database**, without changing the logic:
 
 ```delphi
-TQuery4DController.New(TPostgreSQLView.New). ... .Build;   // direto
-QueryBuilder.Dialect := dSQLite;                            // via componente
+TQuery4DController.New(TPostgreSQLView.New). ... .Build;   // directly
+QueryBuilder.Dialect := dSQLite;                            // via the component
 ```
 
-Detalhes, limitações e emulações por banco em [docs/DIALECTS.md](docs/DIALECTS.md).
+Details, limitations and per-database emulations in [docs/DIALECTS.md](docs/DIALECTS.md).
 
 ---
 
-## Segurança
+## Safety
 
-- Todo valor passado a predicados WHERE/SET vira **parâmetro bind** (`?` ou `$N`) —
-  nunca é interpolado como string no SQL.
-- `UPDATE` e `DELETE` sem `WHERE` lançam **`EUnsafeOperation`** na camada Controller,
-  antes de chegar ao dialeto (proteção garantida mesmo com mocks em testes).
-- `TGuard` valida pré-condições em todos os pontos de entrada públicos.
-- Hierarquia de exceções tipadas: `EQuery4D` → `EInvalidQuery`, `EUnsafeOperation`,
+- Every value passed to WHERE/SET predicates becomes a **bind parameter** (`?` or `$N`) —
+  it is never interpolated as a string into the SQL.
+- `UPDATE` and `DELETE` without `WHERE` raise **`EUnsafeOperation`** in the Controller layer,
+  before reaching the dialect (the guarantee holds even with test mocks).
+- `TGuard` validates preconditions at every public entry point.
+- Typed exception hierarchy: `EQuery4D` → `EInvalidQuery`, `EUnsafeOperation`,
   `EDialectNotInjected`, `EInvalidAlias`.
 
 ---
 
-## Arquitetura
+## Architecture
 
-Padrão **MVC** com regras de dependência estritas (Clean Architecture):
+**MVC** with strict dependency rules (Clean Architecture):
 
-| Camada | Responsabilidade |
-|--------|------------------|
-| **Model** | Estado da query: campos, WHERE, JOINs, ORDER, GROUP, CTEs, paginação, DML |
-| **View** | Renderiza o Model em SQL para um dialeto específico (`IDialectView`) |
-| **Controller** | API fluente que o usuário chama; manipula o Model e delega ao View no `Build` |
+| Layer | Responsibility |
+| ----- | -------------- |
+| **Model** | Query state: fields, WHERE, JOINs, ORDER, GROUP, CTEs, pagination, DML |
+| **View** | Renders the Model into SQL for a specific dialect (`IDialectView`) |
+| **Controller** | The fluent API you call; mutates the Model and delegates to the View on `Build` |
 
-**Extensibilidade (Open/Closed):** para adicionar um dialeto, implemente `IDialectView`
-(ou herde de `TBaseDialectView` e sobrescreva só o que difere: `QuoteIdentifier`,
-`ParameterPlaceholder`, `RenderPaginationClause`). Nenhuma linha existente muda.
+```mermaid
+flowchart LR
+    App["Your code"] -->|fluent calls| Ctrl["Controller<br/>IQuery4DController + sub-controllers"]
+    Ctrl -->|mutates| Model["Model<br/>TQueryModel + sub-models"]
+    Ctrl -->|Build| View["View<br/>IDialectView (chosen dialect)"]
+    View -->|reads| Model
+    View -->|TResult&lt;TQueryResult&gt;| App
+    Ctrl -. validates .-> Shared["Shared<br/>TGuard · TResult&lt;T&gt; · exceptions"]
+    View -. uses .-> Shared
+```
 
-Detalhes em [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+**Extensibility (Open/Closed):** to add a dialect, implement `IDialectView` (or inherit from
+`TBaseDialectView` and override only what differs: `QuoteIdentifier`, `ParameterPlaceholder`,
+`RenderPaginationClause`). No existing line changes. Details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 
-## Estrutura do repositório
+## Repository layout
 
 ```
 Query4D/
 ├─ src/
-│  ├─ Shared/        TResult<T>, TGuard, exceções, utilitários
-│  ├─ Model/         TQueryModel e sub-models (estado da query)
-│  ├─ View/          IDialectView + implementações dos 4 dialetos
+│  ├─ Shared/        TResult<T>, TGuard, exceptions, utilities
+│  ├─ Model/         TQueryModel and sub-models (query state)
+│  ├─ View/          IDialectView + the 4 dialect implementations
 │  └─ Controller/    TQuery4DController (fluent) + sub-controllers
 ├─ tests/
-│  ├─ Unit/          testes sem banco (nomenclatura Dado_Quando_Entao)
+│  ├─ Unit/          database-free tests (Given_When_Then naming)
 │  └─ Fixtures/
-├─ samples/          aplicação demo VCL (Query4DDemo)
-├─ docs/             documentação completa
-├─ packages/Delphi12/Query4D.dpk    package instalável (componente TQuery4D)
-└─ Query4D.groupproj                group: lib + testes
+├─ samples/          VCL demo app (Query4DDemo)
+├─ docs/             full documentation
+├─ packages/Delphi12/Query4D.dpk    installable package (TQuery4D component)
+└─ Query4D.groupproj                group: lib + tests
 ```
 
 ---
 
-## Exemplos e demo
+## Examples and demo
 
-- **Aplicação demo** (VCL): abra `samples/Query4DDemo.dpr` na IDE — explora
-  interativamente cada recurso e mostra o SQL gerado por dialeto.
-- **Exemplos comentados** em [docs/examples/](docs/examples/), do simples ao avançado:
+- **Demo app** (VCL): open `samples/Query4DDemo.dpr` in the IDE — interactively explores every
+  feature and shows the generated SQL per dialect.
+- **Annotated examples** in [docs/examples/](docs/examples/), from simple to advanced:
 
-  | # | Exemplo |
-  |---|---------|
-  | 01 | [SELECT básico](docs/examples/01_select_basico.md) |
-  | 02 | [WHERE e operadores](docs/examples/02_where_operadores.md) |
-  | 03 | [JOINs com alias](docs/examples/03_joins_com_alias.md) |
+  | # | Example |
+  | - | ------- |
+  | 01 | [Basic SELECT](docs/examples/01_select_basico.md) |
+  | 02 | [WHERE and operators](docs/examples/02_where_operadores.md) |
+  | 03 | [JOINs with alias](docs/examples/03_joins_com_alias.md) |
   | 04 | [INSERT / UPDATE / DELETE](docs/examples/04_insert_update_delete.md) |
-  | 05 | [CTE simples](docs/examples/05_cte_simples.md) |
-  | 06 | [CTE recursivo](docs/examples/06_cte_recursivo.md) |
+  | 05 | [Simple CTE](docs/examples/05_cte_simples.md) |
+  | 06 | [Recursive CTE](docs/examples/06_cte_recursivo.md) |
   | 07 | [Subqueries](docs/examples/07_subqueries.md) |
-  | 08 | [Dialetos comparados](docs/examples/08_dialetos_comparados.md) |
+  | 08 | [Dialects compared](docs/examples/08_dialetos_comparados.md) |
 
 ---
 
-## Documentação
+## Documentation
 
-| Arquivo | Conteúdo |
-|---------|----------|
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Decisões de design, padrão MVC, regras de dependência |
-| [docs/API.md](docs/API.md) | Referência completa de todos os métodos |
-| [docs/OPERATORS.md](docs/OPERATORS.md) | Todos os operadores WHERE documentados |
-| [docs/DIALECTS.md](docs/DIALECTS.md) | Diferenças e limitações por banco de dados |
-| [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) | Como contribuir e como adicionar um dialeto |
-| [docs/BOSS.md](docs/BOSS.md) | Instalação via Boss, workflow de release |
-| [docs/CHANGELOG.md](docs/CHANGELOG.md) | Histórico de versões |
+| File | Contents |
+| ---- | -------- |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Design decisions, the MVC pattern, dependency rules, diagrams |
+| [docs/API.md](docs/API.md) | Full reference of every method |
+| [docs/OPERATORS.md](docs/OPERATORS.md) | Every WHERE operator documented |
+| [docs/DIALECTS.md](docs/DIALECTS.md) | Per-database differences and limitations |
+| [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) | How to contribute and how to add a dialect |
+| [docs/BOSS.md](docs/BOSS.md) | Boss install, release workflow |
+| [docs/CHANGELOG.md](docs/CHANGELOG.md) | Version history |
 
 ---
 
 ## Roadmap
 
-Planejado para versões futuras (veja [docs/CHANGELOG.md](docs/CHANGELOG.md)):
+Planned for future versions (see [docs/CHANGELOG.md](docs/CHANGELOG.md)):
 
-- [ ] Dialeto **Oracle** (`ROWNUM`, quotes `[col]`)
-- [ ] Dialeto **SQL Server** (`TOP`, quotes `[col]`)
-- [ ] `IsInSubquery` tipado recebendo `IQuery4DController` como parâmetro
-- [ ] `ILIKE` nativo no dialeto PostgreSQL
-
----
-
-## Como contribuir
-
-Contribuições são bem-vindas! Veja [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
-para padrões de código, convenção de testes (`Dado_Quando_Entao`) e o passo a passo
-de como adicionar um novo dialeto. Abra uma issue antes de PRs grandes.
+- [ ] **Oracle** dialect (`ROWNUM`, `[col]` quotes)
+- [ ] **SQL Server** dialect (`TOP`, `[col]` quotes)
+- [ ] Typed `IsInSubquery` taking an `IQuery4DController` as parameter
+- [ ] Native `ILIKE` in the PostgreSQL dialect
 
 ---
 
-## Licença
+## Contributing
 
-[MIT](LICENSE) — livre para uso comercial e open source. Copyright (c) 2026 OurSoft.
+Contributions are welcome! See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for coding standards,
+the test convention (`Given_When_Then`), and the step-by-step guide to adding a new dialect.
+Open an issue before large PRs.
+
+---
+
+## License
+
+[MIT](LICENSE) — free for commercial and open-source use. Copyright (c) 2026 OurSoft.

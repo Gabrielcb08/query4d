@@ -480,6 +480,17 @@ Padrão **MVC** com regras de dependência estritas (Clean Architecture):
 | **View** | Renderiza o Model em SQL para um dialeto específico (`IDialectView`) |
 | **Controller** | API fluente que o usuário chama; manipula o Model e delega ao View no `Build` |
 
+```mermaid
+flowchart LR
+    App["Seu código"] -->|chamadas fluentes| Ctrl["Controller<br/>IQuery4DController + sub-controllers"]
+    Ctrl -->|manipula| Model["Model<br/>TQueryModel + sub-models"]
+    Ctrl -->|Build| View["View<br/>IDialectView (dialeto escolhido)"]
+    View -->|lê| Model
+    View -->|TResult&lt;TQueryResult&gt;| App
+    Ctrl -. valida .-> Shared["Shared<br/>TGuard · TResult&lt;T&gt; · exceções"]
+    View -. usa .-> Shared
+```
+
 **Extensibilidade (Open/Closed):** para adicionar um dialeto, implemente `IDialectView`
 (ou herde de `TBaseDialectView` e sobrescreva só o que difere: `QuoteIdentifier`,
 `ParameterPlaceholder`, `RenderPaginationClause`). Nenhuma linha existente muda.
