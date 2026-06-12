@@ -12,9 +12,35 @@ boss install https://github.com/gabrielcb08/query4d@v1.0.0
 boss install https://github.com/gabrielcb08/query4d
 ```
 
-Boss clones the repo into `./modules/query4d` and patches your project's search paths so `uses Query4D.Controller;` works out of the box.
+Boss clones the repo into `./modules/query4d`, resolves transitive dependencies (Spring4D), and patches your project's search paths so `uses Query4D.Controller;` works out of the box.
 
-Query4D has **zero external runtime dependencies** — no transitive packages are pulled in.
+The **query-building core** (Controller / Model / View / Shared) is framework-free, but the installable package links `Spring.Base` / `Spring.Core` (used by `Query4D.Container` for IoC bootstrap), so Boss pulls the `andriwsluna/Spring4D` fork declared in `boss.json`.
+
+## Automated build (`postinstall`)
+
+`boss.json` declares a `postinstall` hook that runs `scripts/boss-build.ps1` right after dependencies are resolved, so a fresh `boss install` leaves the library compiled with no manual IDE step. It builds (Win32, Release):
+
+- **Spring4D core** — `Spring.Base` and `Spring.Core` (Query4D links them)
+- **Runtime package** — `Query4D.dproj`
+- **Design-time package** — `dclQuery4D.dproj`
+
+Artifacts (`.dcp` / `.bpl` / `.dcu`) go to `bin\Win32` inside the repo, so nothing pollutes the global RAD Studio directories.
+
+**Requirements**
+- RAD Studio / Delphi **12 Athens (23.0)** — auto-detected via the `BDS` env var → Windows registry → the default `…\Studio\23.0` path.
+- `git` on PATH (only as a fallback, to fetch Spring4D source if `modules/Spring4D/repo/Source` is missing).
+
+Run it manually (e.g. after pulling changes):
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/boss-build.ps1
+```
+
+To skip the build, remove the `scripts.postinstall` entry from `boss.json` (or set `$BuildSpringCore = $false` in the script to skip only the Spring step).
+
+> **Win64 is out of scope.** Design-time packages are 32-bit (the IDE is a 32-bit process), and Win64 `dcc64` builds hit the 32 000-char command-line limit when the machine's global Win64 library path is long. Build Win64 from the IDE if you need it.
+>
+> **Close RAD Studio** (or uninstall the package from the IDE) before running, otherwise the `.bpl` write can fail with `F2039` (file locked).
 
 ## Update
 

@@ -12,5 +12,8 @@
 	],
 	"dependencies": {
 		"github.com/andriwsluna/Spring4D": "v1.0.1"
+	},
+	"scripts": {
+		"postinstall": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/boss-build.ps1"
 	}
 }
