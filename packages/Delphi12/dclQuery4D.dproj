@@ -1,4 +1,4 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{79A31BC8-7E4D-4A20-B4AA-84A53D4E2B4D}</ProjectGuid>
         <MainSource>dclQuery4D.dpk</MainSource>
