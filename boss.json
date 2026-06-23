@@ -1,7 +1,7 @@
 {
 	"name": "query4d",
 	"description": "Fluent SQL query builder for Delphi with pluggable dialects (MySQL, PostgreSQL, Firebird, SQLite), safety guards and zero external dependencies.",
-	"version": "v1.0.0",
+	"version": "v1.0.1",
 	"homepage": "https://github.com/gabrielcb08/query4d",
 	"mainsrc": "packages/Delphi12",
 	"projects": [
